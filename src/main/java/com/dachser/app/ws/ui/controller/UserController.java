@@ -1,5 +1,7 @@
 package com.dachser.app.ws.ui.controller;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,11 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dachser.app.ws.service.impl.UserService;
+import com.dachser.app.ws.shared.dto.UserDto;
 import com.dachser.app.ws.ui.model.request.UserDetailsRequestModel;
+import com.dachser.app.ws.ui.model.response.UserResp;
+
+
 
 @RestController // to receive HTTP request
 @RequestMapping("users") // http://localholst:8080/users
 public class UserController {
+	
+	@Autowired
+	UserService userService; 
 	
 	
 	@GetMapping()
@@ -31,7 +41,16 @@ public class UserController {
 	@PostMapping()
 	public String createUser(@RequestBody UserDetailsRequestModel userDetails ) {
 		
-		return "Create user methode for user: " + userDetails.getFirstName();
+		UserResp returnValue = new UserResp();
+		UserDto userDto = new UserDto();
+		
+		// mapping data from source userDetails to userDto
+		BeanUtils.copyProperties(userDetails, userDto);
+		
+		UserDto createUser = userService.createUser(userDto);
+		
+		
+		return "Create user methode for user: " + userDto.getEmail();
 	}
 	
 	
