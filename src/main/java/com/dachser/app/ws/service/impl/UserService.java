@@ -8,12 +8,16 @@ import com.dachser.app.ws.io.entity.User;
 import com.dachser.app.ws.repository.IUserRepository;
 import com.dachser.app.ws.service.IUserService;
 import com.dachser.app.ws.shared.dto.UserDto;
+import com.dachser.app.ws.shared.dto.MyUtils;
 
 @Service
 public class UserService implements IUserService {
 	
 	@Autowired
 	IUserRepository userRepository;
+	
+	@Autowired
+	MyUtils myUtils;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -21,20 +25,16 @@ public class UserService implements IUserService {
 		
 		BeanUtils.copyProperties(userDto, user);
 		
-		String tempUserId = "this is temp userId";
+		String uuid = myUtils.gennerateUUID();
 		
 		user.setEncryptedPassword("!QA1qa");
-		user.setUserId(tempUserId);
+		user.setUserId(uuid);
 		user.setEmailVerificationToken("this is temp email VerificaitonToken");
 		
 		//check if email and userId exist before.
 		User checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser != null) {
 			throw new RuntimeException("this email exist before");
-		}
-		checkUser = userRepository.findByUserId(tempUserId);
-		if (checkUser != null) {
-			throw new RuntimeException("this user Id exist before");
 		}
 		
 		//save user in database
