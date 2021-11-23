@@ -4,41 +4,41 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dachser.app.ws.io.entity.User;
-import com.dachser.app.ws.repository.IUserRepository;
-import com.dachser.app.ws.service.IUserService;
+import com.dachser.app.ws.io.entity.UserEntity;
+import com.dachser.app.ws.repository.UserRepository;
+import com.dachser.app.ws.service.UserService;
 import com.dachser.app.ws.shared.dto.UserDto;
 import com.dachser.app.ws.shared.dto.MyUtils;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	IUserRepository userRepository;
+	UserRepository userRepository;
 	
 	@Autowired
 	MyUtils myUtils;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
-		User user = new User();
+		UserEntity userEntity = new UserEntity();
 		
-		BeanUtils.copyProperties(userDto, user);
+		BeanUtils.copyProperties(userDto, userEntity);
 		
 		String uuid = myUtils.gennerateUUID();
 		
-		user.setEncryptedPassword("!QA1qa");
-		user.setUserId(uuid);
-		user.setEmailVerificationToken("this is temp email VerificaitonToken");
+		userEntity.setEncryptedPassword("!QA1qa");
+		userEntity.setUserId(uuid);
+		userEntity.setEmailVerificationToken("this is temp email VerificaitonToken");
 		
 		//check if email and userId exist before.
-		User checkUser = userRepository.findByEmail(user.getEmail());
+		UserEntity checkUser = userRepository.findByEmail(userEntity.getEmail());
 		if (checkUser != null) {
 			throw new RuntimeException("this email exist before");
 		}
 		
 		//save user in database
-		User storedUserDetails = userRepository.save(user);
+		UserEntity storedUserDetails = userRepository.save(userEntity);
 		UserDto returnValue = new UserDto();
 		
 		BeanUtils.copyProperties(storedUserDetails, returnValue);

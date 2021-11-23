@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dachser.app.ws.service.impl.UserService;
+import com.dachser.app.ws.service.impl.UserServiceImpl;
 import com.dachser.app.ws.shared.dto.UserDto;
 import com.dachser.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.dachser.app.ws.ui.model.response.UserResp;
@@ -23,7 +23,7 @@ import com.dachser.app.ws.ui.model.response.UserResp;
 public class UserController {
 	
 	@Autowired
-	UserService userService; 
+	UserServiceImpl userServiceImpl; 
 	
 	
 	@GetMapping()
@@ -46,7 +46,7 @@ public class UserController {
 		// mapping data from source userDetails to userDto
 		BeanUtils.copyProperties(userDetails, userDto);
 		
-		UserDto createUser = userService.createUser(userDto);
+		UserDto createUser = userServiceImpl.createUser(userDto);
 		
 		
 		UserResp returnValue = new UserResp();
