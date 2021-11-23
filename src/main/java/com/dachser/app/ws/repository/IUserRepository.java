@@ -7,7 +7,15 @@ import com.dachser.app.ws.io.entity.User;
 
 @Repository
 public interface IUserRepository extends CrudRepository<User, Long> {
+	/* 
+	 * spring data jpa provides with convenient use query language, 
+	 * the technique of the method name: 
+	 * 		findBy<faield name>(<faieldType> value)
+	*/ 
 	
-	User findUserByEmail(String email); 
+	User findByEmail(String value); 
+	
+	User findByUserId(String value);
+	
 
 }

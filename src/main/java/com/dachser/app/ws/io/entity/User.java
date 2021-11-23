@@ -18,7 +18,7 @@ public class User implements Serializable {
 	@Column(name="id", nullable = false)
 	private long id;
 	
-	@Column(name="userId", nullable = false, length = 255)
+	@Column(name="userId", nullable = false, length = 255, unique = true)
 	private String userId;
 	
 	@Column(name="firstName",  length = 50)
@@ -27,7 +27,7 @@ public class User implements Serializable {
 	@Column(name="lastName", length = 50)
 	private String lastName;
 	
-	@Column(name="email", nullable = false, length = 150)
+	@Column(name="email", nullable = false, length = 150, unique = true)
 	private String email;
 	
 	@Column(name="encryptedPassword", nullable = false)

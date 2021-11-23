@@ -21,9 +21,21 @@ public class UserService implements IUserService {
 		
 		BeanUtils.copyProperties(userDto, user);
 		
+		String tempUserId = "this is temp userId";
+		
 		user.setEncryptedPassword("!QA1qa");
-		user.setUserId("this is temp userId");
+		user.setUserId(tempUserId);
 		user.setEmailVerificationToken("this is temp email VerificaitonToken");
+		
+		//check if email and userId exist before.
+		User checkUser = userRepository.findByEmail(user.getEmail());
+		if (checkUser != null) {
+			throw new RuntimeException("this email exist before");
+		}
+		checkUser = userRepository.findByUserId(tempUserId);
+		if (checkUser != null) {
+			throw new RuntimeException("this user Id exist before");
+		}
 		
 		//save user in database
 		User storedUserDetails = userRepository.save(user);
