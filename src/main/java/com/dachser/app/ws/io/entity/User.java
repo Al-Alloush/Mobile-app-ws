@@ -41,6 +41,7 @@ public class User implements Serializable {
 	private Boolean emailVerificationStatus = false;
 
 	
+
 	
 	
 	// getters & setters 
@@ -102,11 +103,11 @@ public class User implements Serializable {
 		this.emailVerificationToken = emailVerificationToken;
 	}
 
-	public boolean isEmailVerificationStatus() {
+	public Boolean getEmailVerificationStatus() {
 		return emailVerificationStatus;
 	}
 
-	public void setEmailVerificationStatus(boolean emailVerificationStatus) {
+	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
 	}
 	

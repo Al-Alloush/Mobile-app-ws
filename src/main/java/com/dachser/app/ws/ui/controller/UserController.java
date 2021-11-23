@@ -39,9 +39,8 @@ public class UserController {
 	}
 	
 	@PostMapping()
-	public String createUser(@RequestBody UserDetailsRequestModel userDetails ) {
+	public UserResp createUser(@RequestBody UserDetailsRequestModel userDetails ) {
 		
-		UserResp returnValue = new UserResp();
 		UserDto userDto = new UserDto();
 		
 		// mapping data from source userDetails to userDto
@@ -50,7 +49,10 @@ public class UserController {
 		UserDto createUser = userService.createUser(userDto);
 		
 		
-		return "Create user methode for user: " + userDto.getEmail();
+		UserResp returnValue = new UserResp();
+		BeanUtils.copyProperties(createUser, returnValue);
+		
+		return returnValue;
 	}
 	
 	
