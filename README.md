@@ -11,7 +11,7 @@ Inside *application.properties* file can add different properties that my code c
 
 ## add WebSecurity class to activate Authorization,
 
-if the request is not allowed to access with out authentication, server response error status 403 forbidden:  
+if the request is not allowed to access without authentication, server response error status 403 forbidden:  
 
 ```
 403 Forbidden message:
