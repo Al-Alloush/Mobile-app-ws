@@ -2,6 +2,7 @@ package com.dachser.app.ws.service.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dachser.app.ws.io.entity.UserEntity;
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	MyUtils myUtils;
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -25,9 +29,10 @@ public class UserServiceImpl implements UserService {
 		
 		BeanUtils.copyProperties(userDto, userEntity);
 		
+		String encodedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
 		String uuid = myUtils.gennerateUUID();
 		
-		userEntity.setEncryptedPassword("!QA1qa");
+		userEntity.setEncryptedPassword(encodedPassword);
 		userEntity.setUserId(uuid);
 		userEntity.setEmailVerificationToken("this is temp email VerificaitonToken");
 		
