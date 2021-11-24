@@ -17,12 +17,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.dachser.app.ws.SpringApplicationContext;
+import com.dachser.app.ws.service.UserService;
+import com.dachser.app.ws.shared.dto.UserDto;
 import com.dachser.app.ws.ui.model.request.UserLoginRequestModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+/*
+ can't be able to access the UserService implementation, because the AuthenticationFilter not a Bean @Autowrid into WebSecurity,
+ because create a new instance of it manually rather than @Autowrid or inject it in WebSecurity, 
+ AuthenticationFilter can't @Autowrid or inject other Beans
+ 
+ 
+ */
+
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
@@ -72,17 +84,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-
+		
 		String userName = ((User) authResult.getPrincipal()).getUsername();
 		
+		
+		// AuthenticationFilter is not @Autowrid ... we can't call the Bean from it.
+		// for that by SpringApplicationContext get the UserService Bean
+		UserService userService =  (UserService) SpringApplicationContext.getBean("userServiceImpl");
+		// from UserService get inside UserRepository and get the user By email
+		UserDto userDto = userService.getUser(userName);
+
 		String token = Jwts.builder()
 							.setSubject(userName)
-							.setId("user id")
+							.setId(userDto.getUserId())
 							.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 							.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
 							.compact();
 		
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOCKEN_PREFIX + token);
+		response.addHeader("UserId", userDto.getUserId());
 	}
 	
 	
