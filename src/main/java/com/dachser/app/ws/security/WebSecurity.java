@@ -15,7 +15,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private final UserService userDetailsService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final String[] publicPostEendpoints = {
-			"/users", "/login"
+			"/users", "/login", "/user/login"
 	};
 	// change the sequence because when request users/** then request /users will return the last request 403 forbidden error
 	private final String[] publicGetEndpoints = {
@@ -44,10 +44,18 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, publicGetEndpoints).permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.addFilter(new AuthenticationFilter(authenticationManager()));
+			.addFilter(getAuthenticationFilter ());
 	}
 	
-	
+	// to change the login default path and disabled the old one (http://localhost:8080/login)
+	public AuthenticationFilter getAuthenticationFilter () throws Exception{
+		
+		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+		filter.setFilterProcessesUrl("/users/login");
+		
+		return filter;
+		
+	}
 	
 	
 
