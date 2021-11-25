@@ -19,7 +19,7 @@ import com.dachser.app.ws.ui.model.response.UserResp;
 
 
 @RestController // to receive HTTP request
-@RequestMapping("users") // http://localholst:8080/users
+@RequestMapping("user") // http://localholst:8080/users
 public class UserController {
 	
 	@Autowired

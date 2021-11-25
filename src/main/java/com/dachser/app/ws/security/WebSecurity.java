@@ -15,11 +15,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private final UserService userDetailsService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final String[] publicPostEendpoints = {
-			"/users", "/login", "/user/login"
+			"/user", "/login", "/user/login"
 	};
 	// change the sequence because when request users/** then request /users will return the last request 403 forbidden error
 	private final String[] publicGetEndpoints = {
-			 "/users/**", "/users", "/login"
+			 "/user/**", "/user", "/login"
 	};
 	
 	
@@ -51,7 +51,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	public AuthenticationFilter getAuthenticationFilter () throws Exception{
 		
 		final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
-		filter.setFilterProcessesUrl("/users/login");
+		filter.setFilterProcessesUrl("/user/login");
 		
 		return filter;
 		
