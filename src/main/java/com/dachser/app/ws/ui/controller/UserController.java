@@ -32,10 +32,17 @@ public class UserController {
 		return "get users methode";
 	}
 	
-	@GetMapping("/{id}")
-	public String getUsers(@PathVariable int id) {
+	@GetMapping("/{userId}")
+	public UserResp getUsers(@PathVariable String userId) {
 		
-		return "get user: "+id+", methode";
+		UserDto userDto = userServiceImpl.findByUserId(userId);
+		
+		UserResp userResp = new UserResp();
+		
+		BeanUtils.copyProperties(userDto, userResp);
+		
+		return userResp;
+
 	}
 	
 	@PostMapping()

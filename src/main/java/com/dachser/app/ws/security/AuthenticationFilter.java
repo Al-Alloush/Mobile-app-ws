@@ -92,7 +92,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		// for that by SpringApplicationContext get the UserService Bean
 		UserService userService =  (UserService) SpringApplicationContext.getBean("userServiceImpl");
 		// from UserService get inside UserRepository and get the user By email
-		UserDto userDto = userService.getUser(userName);
+		UserDto userDto = userService.findByEmail(userName);
 
 		String token = Jwts.builder()
 							.setSubject(userName)
