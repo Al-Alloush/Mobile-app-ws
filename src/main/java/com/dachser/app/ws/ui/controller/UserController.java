@@ -41,10 +41,14 @@ public class UserController {
 	
 	if need to support the two format, delete 'produces= MediaType or add other MediaType.
 	like: @GetMapping(path="/{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	this way if request Accept the two format, the default response is the first Accept in Header */
+	this way if request Accept the two format, the default response is the first Accept in Header
 	
-	@GetMapping(path="/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	//@GetMapping("/{userId}")
+	for return XML is the same
+	like: @GetMapping(path="/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE }, )
+	 */
+	
+	//@GetMapping(path="/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/{userId}")
 	public UserResp getUsers(@PathVariable String userId) {
 		
 		UserDto userDto = userServiceImpl.findByUserId(userId);
@@ -57,6 +61,8 @@ public class UserController {
 		
 	}
 	
+	// accept the post with XML & JSON format
+	//@PostMapping(consumes = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	@PostMapping()
 	public UserResp createUser(@RequestBody UserDetailsRequestModel userDetails ) {
 		
