@@ -98,7 +98,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 							.setSubject(userName)
 							.setId(userDto.getUserId())
 							.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-							.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET)
+							.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
 							.compact();
 		
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOCKEN_PREFIX + token);
