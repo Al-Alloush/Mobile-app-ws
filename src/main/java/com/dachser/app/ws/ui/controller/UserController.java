@@ -1,7 +1,9 @@
 package com.dachser.app.ws.ui.controller;
 
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,17 @@ public class UserController {
 		return "get users methode";
 	}
 	
-	@GetMapping("/{userId}")
+	/*
+	if I want accept just the XML format add : produces = MediaType.APPLICATION_XML_VALUE
+	in @GetMapping, MediaType from org.springframework.http library. 
+	like:  @GetMapping(path="/{userId}", produces = MediaType.APPLICATION_XML_VALUE)
+	
+	if need to support the two format, delete 'produces= MediaType or add other MediaType.
+	like: @GetMapping(path="/{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	this way if request Accept the two format, the default response is the first Accept in Header */
+	
+	@GetMapping(path="/{userId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	//@GetMapping("/{userId}")
 	public UserResp getUsers(@PathVariable String userId) {
 		
 		UserDto userDto = userServiceImpl.findByUserId(userId);
@@ -42,7 +54,7 @@ public class UserController {
 		BeanUtils.copyProperties(userDto, userResp);
 		
 		return userResp;
-
+		
 	}
 	
 	@PostMapping()
