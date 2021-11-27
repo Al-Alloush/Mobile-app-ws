@@ -16,11 +16,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private final UserService userDetailsService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final String[] publicPostEendpoints = {
-			"/user", "/login", "/user/login","/exception"
+			"/user", "/login", "/user/login","/exception/**"
 	};
 	// change the sequence because when request users/** then request /users will return the last request 403 forbidden error
 	private final String[] publicGetEndpoints = {
-			 "/user/**", "/user", "/login", "/exception"
+			 "/user/**", "/user", "/login", "/exception/**"
 	};
 	
 	
