@@ -103,6 +103,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOCKEN_PREFIX + token);
 		response.addHeader("UserId", userDto.getUserId());
+		
+		// to return the Token with login
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(
+	    		"{\"" + SecurityConstants.HEADER_STRING + "\":\"" + SecurityConstants.TOCKEN_PREFIX + token + "\"}");
 	}
 	
 	
